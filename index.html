@@ -14,11 +14,23 @@
       <button type="submit">Add Item</button>
     </form>
 
+    <div>
+      <button @click="toggleTrash">Show Trash</button>
+    </div>
+
     <ul>
+      <template
+        x-show="showTrash"
+        x-for="trashItem in trash"
+        :key="trashItem.id"
+      >
+        <li x-text="trashItem.name"></li>
+      </template>
       <template x-for="checkItem in items" :key="checkItem.id">
         <li>
           <input id="item.id" type="checkbox" x-model="checkItem.completed" />
           <label x-text="checkItem.name"></label>
+          <button @click="remove(checkItem.id)">Remove</button>
         </li>
       </template>
     </ul>

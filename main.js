@@ -15,6 +15,7 @@ Alpine.data("checklist", () => ({
   item: "",
   items: [],
   trash: [],
+  showTrash: false,
   filtered: [],
 
   init() {
@@ -36,8 +37,12 @@ Alpine.data("checklist", () => ({
   },
 
   remove(id) {
-    // remove item by id and mmove it into trash
-    
+    const index = this.items.findIndex((item) => item.id === id);
+    this.trash.push(this.items.splice(index, 1));
+  },
+
+  toggleTrash() {
+    this.showTrash = !this.showTrash;
   }
 }));
 
