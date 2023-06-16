@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <title>Todo Checklist</title>
-    <script type="module" crossorigin src="/assets/index-8e73c1fe.js"></script>
+    <script type="module" crossorigin src="/assets/index-24073a05.js"></script>
   </head>
   <body x-data="checklist">
     <h1>My Checklist</h1>
@@ -15,11 +15,23 @@
       <button type="submit">Add Item</button>
     </form>
 
+    <div>
+      <button @click="toggleTrash">Show Trash</button>
+    </div>
+
     <ul>
+      <template
+        x-show="showTrash"
+        x-for="trashItem in trash"
+        :key="trashItem.id"
+      >
+        <li x-text="trashItem.name"></li>
+      </template>
       <template x-for="checkItem in items" :key="checkItem.id">
         <li>
           <input id="item.id" type="checkbox" x-model="checkItem.completed" />
           <label x-text="checkItem.name"></label>
+          <button @click="remove(checkItem.id)">Remove</button>
         </li>
       </template>
     </ul>
