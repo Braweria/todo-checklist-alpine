@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <title>Todo Checklist</title>
-    <script type="module" crossorigin src="/assets/index-24073a05.js"></script>
+    <script type="module" crossorigin src="/assets/index-6d3c846f.js"></script>
   </head>
   <body x-data="checklist">
     <h1>My Checklist</h1>
@@ -16,21 +16,31 @@
     </form>
 
     <div>
-      <button @click="toggleTrash">Show Trash</button>
+      <button
+        @click="toggleTrash"
+        x-text="showTrash ? 'Show List' : 'Show Trash'"
+      ></button>
     </div>
 
-    <ul>
-      <template
-        x-show="showTrash"
-        x-for="trashItem in trash"
-        :key="trashItem.id"
-      >
-        <li x-text="trashItem.name"></li>
+    <ul x-show="showTrash">
+      <template x-for="trashItem in trash" :key="trashItem.id">
+        <li>
+          <span x-text="trashItem.name"></span>
+          <button @click="restore(trashItem.id)">Restore</button>
+          <button @click="deleteForever(trashItem.id)">Remove</button>
+        </li>
       </template>
+    </ul>
+
+    <ul x-show="!showTrash">
       <template x-for="checkItem in items" :key="checkItem.id">
         <li>
-          <input id="item.id" type="checkbox" x-model="checkItem.completed" />
-          <label x-text="checkItem.name"></label>
+          <input
+            :id="$id(checkItem.id)"
+            type="checkbox"
+            x-model="checkItem.completed"
+          />
+          <label x-text="checkItem.name" :for="$id(checkItem.id)"></label>
           <button @click="remove(checkItem.id)">Remove</button>
         </li>
       </template>
