@@ -6,4 +6,8 @@ export default defineConfig(({ command }) => {
       base: "/todo-checklist-alpine/",
     };
   }
+
+  return {
+    base: "/",
+  };
 });
