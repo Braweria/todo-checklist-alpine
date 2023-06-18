@@ -3,7 +3,6 @@ import Alpine from "alpinejs";
 window.Alpine = Alpine;
 
 const STORAGE_ITEMS_KEY = "checklist-items";
-const STORAGE_TRASH_KEY = "checklist-items-trash";
 
 function createItem(name) {
   return {
@@ -14,10 +13,16 @@ function createItem(name) {
   };
 }
 
+function fuzzySearch(searchTerm, item) {
+  const regex = new RegExp(searchTerm.split("").join(".*"), "i");
+  return regex.test(item.name);
+}
+
 Alpine.data("checklist", () => ({
   item: "",
   items: [],
   filter: "all",
+  searchTerm: "",
 
   init() {
     const storedItems = JSON.parse(localStorage.getItem(STORAGE_ITEMS_KEY));
@@ -28,7 +33,10 @@ Alpine.data("checklist", () => ({
 
     this.$watch("items", (value) => {
       localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(value));
-      console.log("items changed", value);
+    });
+
+    this.$watch("searchTerm", (value) => {
+      this.filter = `q:${value}`;
     });
   },
 
@@ -39,6 +47,8 @@ Alpine.data("checklist", () => ({
       return this.items.filter((item) => !item.completed && !item.isTrashed);
     } else if (this.filter === "trash") {
       return this.items.filter((item) => item.isTrashed);
+    } else if (this.filter.startsWith("q:")) {
+      return this.items.filter((item) => fuzzySearch(this.searchTerm, item));
     }
     return this.items.filter((item) => !item.isTrashed);
   },
@@ -57,11 +67,12 @@ Alpine.data("checklist", () => ({
     this.items[index].isTrashed = !this.items[index].isTrashed;
   },
 
-  clearTrash() {
-    this.items = this.items.filter((item) => !item.isTrashed);
+  deleteItem(id) {
+    this.items = this.items.filter((item) => item.id !== id);
   },
 
   // Filter commands
+
   applyFilter(filter) {
     this.filter = filter;
   },
