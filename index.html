@@ -15,24 +15,14 @@
     </form>
 
     <div>
-      <button
-        @click="toggleTrash"
-        x-text="showTrash ? 'Show List' : 'Show Trash'"
-      ></button>
+      <button @click="applyFilter('trash')">See Trashed Tasks</button>
+      <button @click="applyFilter('all')">See All Tasks</button>
+      <button @click="applyFilter('completed')">See Completed Tasks</button>
+      <button @click="applyFilter('active')">See Active Tasks</button>
     </div>
 
-    <ul x-show="showTrash">
-      <template x-for="trashItem in trash" :key="trashItem.id">
-        <li>
-          <span x-text="trashItem.name"></span>
-          <button @click="restore(trashItem.id)">Restore</button>
-          <button @click="deleteForever(trashItem.id)">Remove</button>
-        </li>
-      </template>
-    </ul>
-
-    <ul x-show="!showTrash">
-      <template x-for="checkItem in items" :key="checkItem.id">
+    <ul>
+      <template x-for="checkItem in filteredItems" :key="checkItem.id">
         <li>
           <input
             :id="$id(checkItem.id)"
@@ -40,7 +30,7 @@
             x-model="checkItem.completed"
           />
           <label x-text="checkItem.name" :for="$id(checkItem.id)"></label>
-          <button @click="remove(checkItem.id)">Remove</button>
+          <button @click="toggleTrash(checkItem.id)">Remove</button>
         </li>
       </template>
     </ul>
