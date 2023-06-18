@@ -10,36 +10,37 @@ function createItem(name) {
     name,
     completed: false,
     id: Math.round(Date.now() + Math.random()),
+    isTrashed: false,
   };
 }
 
 Alpine.data("checklist", () => ({
   item: "",
   items: [],
-  trash: [],
-  showTrash: false,
-  filtered: [],
+  filter: "all",
 
   init() {
     const storedItems = JSON.parse(localStorage.getItem(STORAGE_ITEMS_KEY));
     if (storedItems) {
       this.items = storedItems;
-    }
-    const storedTrashedItems = JSON.parse(
-      localStorage.getItem(STORAGE_TRASH_KEY)
-    );
-    if (storedTrashedItems) {
-      this.trash = storedTrashedItems;
+      this.filtered = storedItems;
     }
 
     this.$watch("items", (value) => {
       localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(value));
+      console.log("items changed", value);
     });
+  },
 
-    this.$watch("trash", (value) => {
-      console.log(value);
-      localStorage.setItem(STORAGE_TRASH_KEY, JSON.stringify(value));
-    });
+  get filteredItems() {
+    if (this.filter === "completed") {
+      return this.items.filter((item) => item.completed && !item.isTrashed);
+    } else if (this.filter === "active") {
+      return this.items.filter((item) => !item.completed && !item.isTrashed);
+    } else if (this.filter === "trash") {
+      return this.items.filter((item) => item.isTrashed);
+    }
+    return this.items.filter((item) => !item.isTrashed);
   },
 
   add() {
@@ -49,24 +50,20 @@ Alpine.data("checklist", () => ({
     }
   },
 
-  remove(id) {
+  // Trash commands
+
+  toggleTrash(id) {
     const index = this.items.findIndex((item) => item.id === id);
-    this.trash.push(this.items[index]);
-    this.items.splice(index, 1);
+    this.items[index].isTrashed = !this.items[index].isTrashed;
   },
 
-  toggleTrash() {
-    this.showTrash = !this.showTrash;
+  clearTrash() {
+    this.items = this.items.filter((item) => !item.isTrashed);
   },
 
-  restore(id) {
-    const index = this.trash.findIndex((item) => item.id === id);
-    this.items.push(this.trash[index]);
-    this.trash.splice(index, 1);
-  },
-
-  deleteForever(id) {
-    this.trash = this.trash.filter((item) => item.id !== id);
+  // Filter commands
+  applyFilter(filter) {
+    this.filter = filter;
   },
 }));
 
