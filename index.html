@@ -10,9 +10,12 @@
   <body x-data="checklist">
     <h1>My Checklist</h1>
     <form @submit.prevent="add">
-      <input x-model="item" type="text" />
+      <input x-model="item" type="text" placeholder="Task Name" />
       <button type="submit">Add Item</button>
     </form>
+
+    <input x-model="searchTerm" type="text" placeholder="Search Task" />
+    <button @click="searchTerm = ''">Clear Search</button>
 
     <div>
       <button @click="applyFilter('trash')">See Trashed Tasks</button>
@@ -30,7 +33,12 @@
             x-model="checkItem.completed"
           />
           <label x-text="checkItem.name" :for="$id(checkItem.id)"></label>
-          <button @click="toggleTrash(checkItem.id)">Remove</button>
+          <button
+            @click="toggleTrash(checkItem.id)"
+            x-text="filter === 'trash' ? 'Restore' : 'Remove'"
+          ></button>
+          <button x-show="filter === 'trash'" @click="deleteItem(checkItem.id)">
+            Remove
         </li>
       </template>
     </ul>
