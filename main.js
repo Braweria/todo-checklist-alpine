@@ -43,16 +43,20 @@ Alpine.data("checklist", () => ({
   },
 
   get filteredItems() {
-    if (this.filter === "completed") {
-      return this.items.filter((item) => item.completed && !item.isTrashed);
-    } else if (this.filter === "active") {
-      return this.items.filter((item) => !item.completed && !item.isTrashed);
-    } else if (this.filter === "trash") {
-      return this.items.filter((item) => item.isTrashed);
-    } else if (this.filter.startsWith("q:")) {
-      return this.items.filter((item) => fuzzySearch(this.searchTerm, item));
+    switch (true) {
+      case this.filter === "all":
+        return this.items.filter((item) => !item.isTrashed);
+      case this.filter === "trash":
+        return this.items.filter((item) => item.isTrashed);
+      case this.filter === "completed":
+        return this.items.filter((item) => item.completed && !item.isTrashed);
+      case this.filter === "active":
+        return this.items.filter((item) => !item.completed && !item.isTrashed);
+      case this.filter.startsWith("q:"):
+        return this.items.filter((item) => fuzzySearch(this.searchTerm, item));
+      default:
+        return this.items.filter((item) => !item.isTrashed);
     }
-    return this.items.filter((item) => !item.isTrashed);
   },
 
   add() {
