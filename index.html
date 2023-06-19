@@ -17,7 +17,7 @@
         <label for="add-item" class="absolute top-2 left-1 group-focus-within:-top-3 group-focus-within:bg-white px-1 transition-all">Enter new task name</label>
         <input id="add-item" x-model="item" type="text" placeholder="e.g. feed cat" class="placeholder:invisible group-focus-within:placeholder:visible border border-neutral-300 rounded p-2 w-full" />
       </div>
-      <button type="submit" class="p-2 bg-orange-100 hover:bg-orange-200 active:bg-orange-300 rounded flex-1">Add Item</button>
+      <button type="submit" class="p-2 hover:text-black bg-orange-100 hover:bg-orange-200 active:bg-orange-300 rounded flex-1">Add Item</button>
     </form>
 
     <div class="flex gap-2">
@@ -29,10 +29,10 @@
     </div>
 
     <div>
-      <button class="p-2 rounded bg-red-100 hover:bg-red-200 active:bg-red-300" :class="filter === 'trash' ? 'bg-red-600 text-white' : ''" @click="applyFilter('trash')">See Trashed Tasks</button>
-      <button class="p-2 rounded bg-orange-100 hover:bg-orange-200 active:bg-orange-300" :class="filter === 'all' ? 'bg-orange-600 text-white' : ''" @click="applyFilter('all')">See All Tasks</button>
-      <button class="p-2 rounded bg-green-100 hover:bg-green-200 active:bg-green-300" :class="filter === 'completed' ? 'bg-green-600 text-white' : ''" @click="applyFilter('completed')">See Completed Tasks</button>
-      <button class="p-2 rounded bg-blue-100 hover:bg-blue-200 active:bg-blue-300" :class="filter === 'active' ? 'bg-blue-600 text-white' : ''" @click="applyFilter('active')">See Active Tasks</button>
+      <button class="p-2 hover:text-black rounded bg-red-100 hover:bg-red-200 active:bg-red-300" :class="filter === 'trash' ? 'bg-red-600 text-white' : ''" @click="applyFilter('trash')">See Trashed Tasks</button>
+      <button class="p-2 hover:text-black rounded bg-orange-100 hover:bg-orange-200 active:bg-orange-300" :class="filter === 'all' ? 'bg-orange-600 text-white' : ''" @click="applyFilter('all')">See All Tasks</button>
+      <button class="p-2 hover:text-black rounded bg-green-100 hover:bg-green-200 active:bg-green-300" :class="filter === 'completed' ? 'bg-green-600 text-white' : ''" @click="applyFilter('completed')">See Completed Tasks</button>
+      <button class="p-2 hover:text-black rounded bg-blue-100 hover:bg-blue-200 active:bg-blue-300" :class="filter === 'active' ? 'bg-blue-600 text-white' : ''" @click="applyFilter('active')">See Active Tasks</button>
     </div>
 
     <ul class="flex flex-col">
