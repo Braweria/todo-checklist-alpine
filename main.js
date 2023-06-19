@@ -14,8 +14,10 @@ function createItem(name) {
 }
 
 function fuzzySearch(searchTerm, item) {
-  const regex = new RegExp(searchTerm.split("").join(".*"), "i");
-  return regex.test(item.name);
+  const encodedSearchTerm = encodeURIComponent(searchTerm);
+  const encodedItemName = encodeURIComponent(item.name);
+  const regex = new RegExp(encodedSearchTerm.split("").join(".*"), "i");
+  return regex.test(encodedItemName);
 }
 
 Alpine.data("checklist", () => ({
